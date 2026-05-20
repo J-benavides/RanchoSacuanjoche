@@ -1,33 +1,33 @@
-<section id="booking" class="py-20 px-4 sm:px-6 lg:px-8
+<section id="booking" class="py-16 px-4 sm:px-6 lg:px-8
                               bg-gradient-to-b from-gray-50 to-white">
-  <div class="max-w-5xl mx-auto">
+  <div class="max-w-3xl mx-auto">
 
-    <div class="text-center mb-12">
-      <h2 class="text-4xl sm:text-5xl font-bold text-navy mb-4">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl sm:text-5xl font-bold text-navy mb-3">
         Solicita tu <span class="text-gold">Cotización</span>
       </h2>
-      <p class="text-xl text-gray-600">
+      <p class="text-gray-500 text-sm sm:text-xl">
         Completá el formulario y te responderemos en menos de 24 horas
       </p>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
 
       <!-- Progress bar -->
-      <div class="bg-gradient-to-r from-navy to-[#1e293b] p-6">
-        <div class="flex justify-between items-center mb-4">
-          <span class="text-white text-lg font-semibold">
-            Paso {{ currentStep() }} de {{ totalSteps }}
+      <div class="bg-gradient-to-r from-navy to-[#1e293b] px-5 py-4">
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-white text-sm font-semibold">
+            Paso {{ currentStep() }} / {{ totalSteps }}
           </span>
-          <span class="text-white/80 text-sm">{{ stepTitle(currentStep()) }}</span>
+          <span class="text-white/70 text-xs">{{ stepTitle(currentStep()) }}</span>
         </div>
-        <div class="w-full bg-navy/50 rounded-full h-2.5">
-          <div class="bg-gold h-2.5 rounded-full transition-all duration-500"
+        <div class="w-full bg-navy/50 rounded-full h-1.5">
+          <div class="bg-gold h-1.5 rounded-full transition-all duration-500"
                [style.width.%]="progressPercentage()"></div>
         </div>
-        <div class="flex justify-between mt-3">
+        <div class="flex justify-between mt-2">
           @for (s of [1,2,3,4]; track s) {
-            <div class="w-6 h-6 rounded-full flex items-center justify-center
+            <div class="w-5 h-5 rounded-full flex items-center justify-center
                         text-xs font-bold transition-all duration-300"
                  [class.bg-gold]="currentStep() >= s"
                  [class.text-navy]="currentStep() >= s"
@@ -40,90 +40,91 @@
         </div>
       </div>
 
-      <div class="p-6 sm:p-10">
+      <div class="p-5 sm:p-8">
 
         <!-- PASO 1 -->
         @if (currentStep() === 1) {
-          <div class="space-y-6">
+          <div class="space-y-4">
             <div>
-              <h3 class="text-2xl font-bold text-navy mb-1">Información del Evento</h3>
-              <p class="text-gray-500 text-sm mb-6">Completá tus datos para comenzar</p>
+              <h3 class="text-xl font-bold text-navy mb-1">Información del Evento</h3>
+              <p class="text-gray-400 text-xs mb-4">Completá tus datos para comenzar</p>
             </div>
 
             <div>
-              <label class="block text-navy font-semibold mb-2 text-sm">
+              <label class="block text-navy font-semibold mb-1 text-xs uppercase tracking-wide">
                 Nombre Completo *
               </label>
               <input type="text"
                      [ngModel]="fullName()"
                      (ngModelChange)="fullName.set($event)"
                      placeholder="Tu nombre completo"
-                     class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl
-                            focus:border-gold outline-none transition-all text-navy
-                            placeholder:text-gray-400"/>
+                     class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg
+                            focus:border-gold outline-none transition-all text-navy text-sm
+                            placeholder:text-gray-300"/>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-navy font-semibold mb-2 text-sm">
+                <label class="block text-navy font-semibold mb-1 text-xs uppercase tracking-wide">
                   Teléfono *
                 </label>
                 <input type="tel"
                        [ngModel]="phone()"
                        (ngModelChange)="phone.set($event)"
                        placeholder="+506 0000-0000"
-                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl
-                              focus:border-gold outline-none transition-all text-navy
-                              placeholder:text-gray-400"/>
+                       class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg
+                              focus:border-gold outline-none transition-all text-navy text-sm
+                              placeholder:text-gray-300"/>
               </div>
               <div>
-                <label class="block text-navy font-semibold mb-2 text-sm">
-                  Correo Electrónico *
+                <label class="block text-navy font-semibold mb-1 text-xs uppercase tracking-wide">
+                  Correo *
                 </label>
                 <input type="email"
                        [ngModel]="email()"
                        (ngModelChange)="email.set($event)"
                        placeholder="tu@email.com"
-                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl
-                              focus:border-gold outline-none transition-all text-navy
-                              placeholder:text-gray-400"/>
+                       class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg
+                              focus:border-gold outline-none transition-all text-navy text-sm
+                              placeholder:text-gray-300"/>
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-navy font-semibold mb-2 text-sm">
-                  Fecha del Evento *
+                <label class="block text-navy font-semibold mb-1 text-xs uppercase tracking-wide">
+                  Fecha *
                 </label>
                 <input type="date"
                        [ngModel]="eventDate()"
                        (ngModelChange)="eventDate.set($event)"
                        [min]="getTodayDate()"
-                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl
-                              focus:border-gold outline-none transition-all text-navy"/>
+                       class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg
+                              focus:border-gold outline-none transition-all text-navy text-sm"/>
               </div>
               <div>
-                <label class="block text-navy font-semibold mb-2 text-sm">
-                  Cantidad de Personas *
+                <label class="block text-navy font-semibold mb-1 text-xs uppercase tracking-wide">
+                  Personas *
                 </label>
                 <input type="number"
                        [ngModel]="guestCount()"
                        (ngModelChange)="guestCount.set($event)"
                        placeholder="Ej: 100" min="30"
-                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl
-                              focus:border-gold outline-none transition-all text-navy
-                              placeholder:text-gray-400"/>
+                       class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg
+                              focus:border-gold outline-none transition-all text-navy text-sm
+                              placeholder:text-gray-300"/>
               </div>
             </div>
 
             <div>
-              <label class="block text-navy font-semibold mb-2 text-sm">
+              <label class="block text-navy font-semibold mb-1 text-xs uppercase tracking-wide">
                 Tipo de Evento *
               </label>
               <select [ngModel]="eventType()"
                       (ngModelChange)="eventType.set($event)"
-                      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl
-                             focus:border-gold outline-none transition-all bg-white text-navy">
+                      class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg
+                             focus:border-gold outline-none transition-all bg-white
+                             text-navy text-sm">
                 <option value="">Seleccioná un tipo</option>
                 @for (type of eventTypes; track type) {
                   <option [value]="type">{{ type }}</option>
@@ -136,75 +137,72 @@
         <!-- PASO 2 -->
         @if (currentStep() === 2) {
           <div>
-            <h3 class="text-2xl font-bold text-navy mb-1">Elegí tu Paquete</h3>
-            <p class="text-gray-500 text-sm mb-6">
-              Seleccioná el paquete que mejor se adapte a tu evento
+            <h3 class="text-xl font-bold text-navy mb-1">Elegí tu Paquete</h3>
+            <p class="text-gray-400 text-xs mb-5">
+              Tocá una tarjeta para seleccionarla
             </p>
-            <div class="grid grid-cols-1 gap-6">
+            <div class="space-y-4">
               @for (pkg of paquetes; track pkg.id) {
                 <div (click)="selectedPackage.set(pkg.id)"
-                     class="relative cursor-pointer rounded-2xl p-5 border-2
-                            transition-all duration-300 hover:shadow-xl"
+                     class="relative cursor-pointer rounded-xl p-4 border-2
+                            transition-all duration-300"
                      [class.border-gold]="selectedPackage() === pkg.id"
                      [class.bg-gold]="selectedPackage() === pkg.id"
                      [class.bg-opacity-5]="selectedPackage() === pkg.id"
-                     [class.shadow-lg]="selectedPackage() === pkg.id"
-                     [class.border-gray-200]="selectedPackage() !== pkg.id"
-                     [class.ring-2]="pkg.id === 'premium'"
-                     [class.ring-gold]="pkg.id === 'premium'"
-                     [class.ring-opacity-20]="pkg.id === 'premium'">
+                     [class.shadow-md]="selectedPackage() === pkg.id"
+                     [class.border-gray-200]="selectedPackage() !== pkg.id">
 
                   @if (pkg.badge) {
-                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2
-                                bg-gold text-navy px-4 py-1 rounded-full
-                                text-xs font-bold whitespace-nowrap shadow-lg">
+                    <div class="absolute -top-2.5 left-4
+                                bg-gold text-navy px-3 py-0.5 rounded-full
+                                text-xs font-bold shadow">
                       {{ pkg.badge }}
                     </div>
                   }
 
-                  @if (selectedPackage() === pkg.id) {
-                    <div class="absolute -top-3 -right-3 w-8 h-8 bg-gold
-                                rounded-full flex items-center justify-center shadow-lg">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-navy"
-                           fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                      </svg>
-                    </div>
-                  }
-
-                  <div class="flex items-start justify-between mb-3">
-                    <div>
-                      <h4 class="text-xl font-bold text-navy">{{ pkg.name }}</h4>
-                      <p class="text-sm font-semibold text-navy/60">
-                        Mínimo {{ pkg.minPersonas }} personas
-                      </p>
+                  <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                      @if (selectedPackage() === pkg.id) {
+                        <div class="w-5 h-5 bg-gold rounded-full flex items-center
+                                    justify-center flex-shrink-0">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-navy"
+                               fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                          </svg>
+                        </div>
+                      } @else {
+                        <div class="w-5 h-5 border-2 border-gray-300 rounded-full flex-shrink-0"></div>
+                      }
+                      <h4 class="font-bold text-navy">{{ pkg.name }}</h4>
                     </div>
                     <div class="text-right">
-                      <p class="text-2xl font-bold text-gold">{{ pkg.price }}</p>
-                      <p class="text-xs text-gray-500">por persona</p>
+                      <p class="text-lg font-bold text-gold leading-tight">{{ pkg.price }}</p>
+                      <p class="text-xs text-gray-400">por persona</p>
                     </div>
                   </div>
 
-                  <div class="border-t border-gray-100 pt-3 space-y-1.5">
+                  <p class="text-xs text-gray-500 mb-3 ml-7">
+                    Mínimo {{ pkg.minPersonas }} personas
+                  </p>
+
+                  <div class="ml-7 space-y-1">
                     @for (feature of pkg.features; track feature) {
-                      <div class="flex items-start gap-2">
+                      <div class="flex items-start gap-1.5">
                         <svg xmlns="http://www.w3.org/2000/svg"
-                             class="w-3.5 h-3.5 text-gold flex-shrink-0 mt-0.5"
+                             class="w-3 h-3 text-gold flex-shrink-0 mt-0.5"
                              fill="none" viewBox="0 0 24 24"
                              stroke="currentColor" stroke-width="2.5">
                           <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M5 13l4 4L19 7"/>
                         </svg>
-                        <span class="text-xs text-gray-600 leading-relaxed">
-                          {{ feature }}
-                        </span>
+                        <span class="text-xs text-gray-600">{{ feature }}</span>
                       </div>
                     }
                   </div>
                 </div>
               }
             </div>
-            <p class="text-xs text-gray-500 text-center mt-4 italic">
+            <p class="text-xs text-gray-400 text-center mt-4 italic">
               Los 3 paquetes aplican para quinceañeras, bodas y cenas de graduación.
             </p>
           </div>
@@ -212,57 +210,48 @@
 
         <!-- PASO 3 -->
         @if (currentStep() === 3) {
-          <div class="space-y-8">
+          <div class="space-y-6">
             <div>
-              <h3 class="text-2xl font-bold text-navy mb-1">Menú y Bebidas</h3>
-              <p class="text-gray-500 text-sm">Personalizá el menú de tu evento</p>
+              <h3 class="text-xl font-bold text-navy mb-1">Menú y Bebidas</h3>
+              <p class="text-gray-400 text-xs">Personalizá el menú de tu evento</p>
             </div>
 
             <!-- Entradas -->
             <div>
-              <div class="flex items-center justify-between mb-1">
-                <h4 class="text-base font-bold text-navy">Entradas</h4>
-                <span class="text-xs font-semibold px-3 py-1 bg-gold/10
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="text-sm font-bold text-navy">Entradas</h4>
+                <span class="text-xs font-semibold px-2 py-0.5 bg-gold/10
                              text-gold rounded-full">
-                  {{ selectedEntradas().length }} / {{ maxEntradas() }}
-                  seleccionada{{ maxEntradas() > 1 ? 's' : '' }}
+                  {{ selectedEntradas().length }}/{{ maxEntradas() }}
                 </span>
               </div>
-              <p class="text-xs text-gray-400 mb-3">
-                @if (+guestCount() >= 100) {
-                  Podés seleccionar hasta 2 entradas
-                } @else {
-                  Seleccioná 1 entrada
-                }
+              <p class="text-xs text-gray-400 mb-2">
+                @if (+guestCount() >= 100) { Hasta 2 entradas }
+                @else { Seleccioná 1 entrada }
               </p>
               <div class="flex flex-wrap gap-2">
                 @for (item of entradas; track item) {
                   <button type="button" (click)="toggleEntrada(item)"
-                          class="flex items-center gap-2 px-4 py-2.5 rounded-full
-                                 border-2 transition-all text-sm"
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                                 border transition-all text-xs"
                           [class.border-gold]="selectedEntradas().includes(item)"
                           [class.bg-gold]="selectedEntradas().includes(item)"
                           [class.bg-opacity-10]="selectedEntradas().includes(item)"
                           [class.font-semibold]="selectedEntradas().includes(item)"
+                          [class.text-navy]="selectedEntradas().includes(item)"
                           [class.border-gray-200]="!selectedEntradas().includes(item)"
-                          [class.opacity-40]="isEntradasDisabled(item)"
+                          [class.text-gray-600]="!selectedEntradas().includes(item)"
+                          [class.opacity-30]="isEntradasDisabled(item)"
                           [class.cursor-not-allowed]="isEntradasDisabled(item)"
                           [disabled]="isEntradasDisabled(item)">
-                    <div class="w-3.5 h-3.5 rounded border-2 flex-shrink-0 flex
-                                items-center justify-center transition-all"
-                         [class.border-gold]="selectedEntradas().includes(item)"
-                         [class.bg-gold]="selectedEntradas().includes(item)"
-                         [class.border-gray-300]="!selectedEntradas().includes(item)">
-                      @if (selectedEntradas().includes(item)) {
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="w-2.5 h-2.5 text-navy" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                          <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M5 13l4 4L19 7"/>
-                        </svg>
-                      }
-                    </div>
-                    <span class="text-navy">{{ item }}</span>
+                    @if (selectedEntradas().includes(item)) {
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                           class="w-3 h-3 text-gold flex-shrink-0" fill="none"
+                           viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    }
+                    {{ item }}
                   </button>
                 }
               </div>
@@ -270,88 +259,78 @@
 
             <!-- Carnes -->
             <div>
-              <div class="flex items-center justify-between mb-1">
-                <h4 class="text-base font-bold text-navy">Carnes</h4>
-                <span class="text-xs font-semibold px-3 py-1 bg-gold/10
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="text-sm font-bold text-navy">Carnes</h4>
+                <span class="text-xs font-semibold px-2 py-0.5 bg-gold/10
                              text-gold rounded-full">
-                  {{ selectedCarnes().length }} / 2 seleccionadas
+                  {{ selectedCarnes().length }}/2
                 </span>
               </div>
-              <p class="text-xs text-gray-400 mb-3">Seleccioná hasta 2 carnes</p>
+              <p class="text-xs text-gray-400 mb-2">Hasta 2 carnes</p>
               <div class="flex flex-wrap gap-2">
                 @for (item of carnes; track item) {
                   <button type="button" (click)="toggleCarne(item)"
-                          class="flex items-center gap-2 px-4 py-2.5 rounded-full
-                                 border-2 transition-all text-sm"
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                                 border transition-all text-xs"
                           [class.border-gold]="selectedCarnes().includes(item)"
                           [class.bg-gold]="selectedCarnes().includes(item)"
                           [class.bg-opacity-10]="selectedCarnes().includes(item)"
                           [class.font-semibold]="selectedCarnes().includes(item)"
+                          [class.text-navy]="selectedCarnes().includes(item)"
                           [class.border-gray-200]="!selectedCarnes().includes(item)"
-                          [class.opacity-40]="isCarnasDisabled(item)"
+                          [class.text-gray-600]="!selectedCarnes().includes(item)"
+                          [class.opacity-30]="isCarnasDisabled(item)"
                           [class.cursor-not-allowed]="isCarnasDisabled(item)"
                           [disabled]="isCarnasDisabled(item)">
-                    <div class="w-3.5 h-3.5 rounded border-2 flex-shrink-0 flex
-                                items-center justify-center transition-all"
-                         [class.border-gold]="selectedCarnes().includes(item)"
-                         [class.bg-gold]="selectedCarnes().includes(item)"
-                         [class.border-gray-300]="!selectedCarnes().includes(item)">
-                      @if (selectedCarnes().includes(item)) {
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="w-2.5 h-2.5 text-navy" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                          <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M5 13l4 4L19 7"/>
-                        </svg>
-                      }
-                    </div>
-                    <span class="text-navy">{{ item }}</span>
+                    @if (selectedCarnes().includes(item)) {
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                           class="w-3 h-3 text-gold flex-shrink-0" fill="none"
+                           viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    }
+                    {{ item }}
                   </button>
                 }
               </div>
               <p class="text-xs text-gray-400 mt-2 italic">
-                Salsas incluidas: blanca, especias, maracuyá, agridulce, BBQ y miel
+                Salsas: blanca, especias, maracuyá, agridulce, BBQ y miel
               </p>
             </div>
 
             <!-- Acompañamientos -->
             <div>
-              <div class="flex items-center justify-between mb-1">
-                <h4 class="text-base font-bold text-navy">Acompañamientos</h4>
-                <span class="text-xs font-semibold px-3 py-1 bg-gold/10
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="text-sm font-bold text-navy">Acompañamientos</h4>
+                <span class="text-xs font-semibold px-2 py-0.5 bg-gold/10
                              text-gold rounded-full">
-                  {{ selectedAcompanamientos().length }} / 3 seleccionados
+                  {{ selectedAcompanamientos().length }}/3
                 </span>
               </div>
-              <p class="text-xs text-gray-400 mb-3">Seleccioná hasta 3 acompañamientos</p>
+              <p class="text-xs text-gray-400 mb-2">Hasta 3 acompañamientos</p>
               <div class="flex flex-wrap gap-2">
                 @for (item of acompanamientos; track item) {
                   <button type="button" (click)="toggleAcompanamiento(item)"
-                          class="flex items-center gap-2 px-4 py-2.5 rounded-full
-                                 border-2 transition-all text-sm"
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                                 border transition-all text-xs"
                           [class.border-gold]="selectedAcompanamientos().includes(item)"
                           [class.bg-gold]="selectedAcompanamientos().includes(item)"
                           [class.bg-opacity-10]="selectedAcompanamientos().includes(item)"
                           [class.font-semibold]="selectedAcompanamientos().includes(item)"
+                          [class.text-navy]="selectedAcompanamientos().includes(item)"
                           [class.border-gray-200]="!selectedAcompanamientos().includes(item)"
-                          [class.opacity-40]="isAcompDisabled(item)"
+                          [class.text-gray-600]="!selectedAcompanamientos().includes(item)"
+                          [class.opacity-30]="isAcompDisabled(item)"
                           [class.cursor-not-allowed]="isAcompDisabled(item)"
                           [disabled]="isAcompDisabled(item)">
-                    <div class="w-3.5 h-3.5 rounded border-2 flex-shrink-0 flex
-                                items-center justify-center transition-all"
-                         [class.border-gold]="selectedAcompanamientos().includes(item)"
-                         [class.bg-gold]="selectedAcompanamientos().includes(item)"
-                         [class.border-gray-300]="!selectedAcompanamientos().includes(item)">
-                      @if (selectedAcompanamientos().includes(item)) {
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="w-2.5 h-2.5 text-navy" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                          <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M5 13l4 4L19 7"/>
-                        </svg>
-                      }
-                    </div>
-                    <span class="text-navy">{{ item }}</span>
+                    @if (selectedAcompanamientos().includes(item)) {
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                           class="w-3 h-3 text-gold flex-shrink-0" fill="none"
+                           viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    }
+                    {{ item }}
                   </button>
                 }
               </div>
@@ -359,34 +338,32 @@
 
             <!-- Postre -->
             <div>
-              <div class="flex items-center justify-between mb-1">
-                <h4 class="text-base font-bold text-navy">Postre</h4>
-                <span class="text-xs font-semibold px-3 py-1 bg-gold/10
-                             text-gold rounded-full">
-                  Seleccioná 1
-                </span>
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="text-sm font-bold text-navy">Postre</h4>
+                <span class="text-xs font-semibold px-2 py-0.5 bg-gold/10
+                             text-gold rounded-full">1</span>
               </div>
-              <p class="text-xs text-gray-400 mb-3">Elegí el postre que más te guste</p>
+              <p class="text-xs text-gray-400 mb-2">Elegí 1 postre</p>
               <div class="flex flex-wrap gap-2">
                 @for (postre of postres; track postre) {
                   <button type="button" (click)="selectedPostre.set(postre)"
-                          class="flex items-center gap-2 px-4 py-2.5 rounded-full
-                                 border-2 transition-all text-sm"
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                                 border transition-all text-xs"
                           [class.border-gold]="selectedPostre() === postre"
                           [class.bg-gold]="selectedPostre() === postre"
                           [class.bg-opacity-10]="selectedPostre() === postre"
                           [class.font-semibold]="selectedPostre() === postre"
-                          [class.border-gray-200]="selectedPostre() !== postre">
-                    <div class="w-3.5 h-3.5 rounded-full border-2 flex-shrink-0
-                                flex items-center justify-center transition-all"
-                         [class.border-gold]="selectedPostre() === postre"
-                         [class.bg-gold]="selectedPostre() === postre"
-                         [class.border-gray-300]="selectedPostre() !== postre">
-                      @if (selectedPostre() === postre) {
-                        <div class="w-2 h-2 rounded-full bg-navy"></div>
-                      }
-                    </div>
-                    <span class="text-navy">{{ postre }}</span>
+                          [class.text-navy]="selectedPostre() === postre"
+                          [class.border-gray-200]="selectedPostre() !== postre"
+                          [class.text-gray-600]="selectedPostre() !== postre">
+                    @if (selectedPostre() === postre) {
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                           class="w-3 h-3 text-gold flex-shrink-0" fill="none"
+                           viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    }
+                    {{ postre }}
                   </button>
                 }
               </div>
@@ -396,209 +373,168 @@
 
         <!-- PASO 4 -->
         @if (currentStep() === 4) {
-          <div class="space-y-5">
+          <div class="space-y-4">
             <div>
-              <h3 class="text-2xl font-bold text-navy mb-1">Resumen de tu Cotización</h3>
-              <p class="text-gray-500 text-sm mb-6">Revisá los detalles antes de enviar</p>
+              <h3 class="text-xl font-bold text-navy mb-1">Resumen de tu Cotización</h3>
+              <p class="text-gray-400 text-xs mb-4">Revisá antes de enviar</p>
             </div>
 
             <!-- Tu evento -->
-            <div class="bg-gold/5 p-5 rounded-2xl border-2 border-gold/30">
-              <h4 class="font-bold text-navy mb-4 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gold"
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0
-                           012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18
-                           0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0
-                           0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25
-                           9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
-                </svg>
-                Tu Evento
-              </h4>
-              <div class="grid grid-cols-3 gap-3">
-                <div class="bg-white rounded-xl p-3 text-center">
-                  <p class="text-gray-400 text-xs mb-1">Tipo</p>
-                  <p class="font-bold text-navy text-xs sm:text-sm">{{ eventType() }}</p>
+            <div class="bg-gold/5 p-4 rounded-xl border border-gold/20">
+              <h4 class="font-bold text-navy text-sm mb-3">Tu Evento</h4>
+              <div class="grid grid-cols-3 gap-2">
+                <div class="bg-white rounded-lg p-2 text-center">
+                  <p class="text-gray-400 text-xs mb-0.5">Tipo</p>
+                  <p class="font-bold text-navy text-xs">{{ eventType() }}</p>
                 </div>
-                <div class="bg-white rounded-xl p-3 text-center">
-                  <p class="text-gray-400 text-xs mb-1">Fecha</p>
-                  <p class="font-bold text-navy text-xs sm:text-sm">
-                    {{ formatFecha(eventDate()) }}
-                  </p>
+                <div class="bg-white rounded-lg p-2 text-center">
+                  <p class="text-gray-400 text-xs mb-0.5">Fecha</p>
+                  <p class="font-bold text-navy text-xs">{{ formatFecha(eventDate()) }}</p>
                 </div>
-                <div class="bg-white rounded-xl p-3 text-center">
-                  <p class="text-gray-400 text-xs mb-1">Personas</p>
-                  <p class="font-bold text-navy text-xs sm:text-sm">{{ guestCount() }}</p>
+                <div class="bg-white rounded-lg p-2 text-center">
+                  <p class="text-gray-400 text-xs mb-0.5">Personas</p>
+                  <p class="font-bold text-navy text-xs">{{ guestCount() }}</p>
                 </div>
               </div>
             </div>
 
             <!-- Paquete -->
             @if (selectedPackageData()) {
-              <div class="bg-white p-5 rounded-2xl border-2 border-gray-100 shadow-sm">
-                <h4 class="font-bold text-navy mb-3">Paquete Elegido</h4>
+              <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                <h4 class="font-bold text-navy text-sm mb-2">Paquete</h4>
                 <div class="flex items-center justify-between">
                   <div>
-                    <p class="font-bold text-navy text-lg">
-                      {{ selectedPackageData()!.name }}
-                    </p>
-                    <p class="text-xs text-gray-500">
+                    <p class="font-bold text-navy">{{ selectedPackageData()!.name }}</p>
+                    <p class="text-xs text-gray-400">
                       {{ selectedPackageData()!.price }} × {{ guestCount() }} personas
                     </p>
                   </div>
                   <div class="text-right">
-                    <p class="text-2xl font-bold text-gold">
+                    <p class="text-xl font-bold text-gold">
                       ₡{{ formatNumber(totalEstimado()) }}
                     </p>
-                    <p class="text-xs text-gray-400">Total Estimado</p>
+                    <p class="text-xs text-gray-400">Total</p>
                   </div>
                 </div>
               </div>
             }
 
             <!-- Menú -->
-            <div class="bg-white p-5 rounded-2xl border-2 border-gray-100 shadow-sm">
-              <h4 class="font-bold text-navy mb-4">Menú Seleccionado</h4>
-              <div class="space-y-4">
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+              <h4 class="font-bold text-navy text-sm mb-3">Menú</h4>
+              <div class="space-y-3">
                 @if (selectedEntradas().length > 0) {
                   <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">
                       Entradas
                     </p>
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-1.5">
                       @for (item of selectedEntradas(); track item) {
-                        <span class="bg-gold/10 text-navy border border-gold/30
-                                     px-3 py-1 rounded-full text-xs font-medium">
-                          {{ item }}
-                        </span>
+                        <span class="bg-gold/10 text-navy border border-gold/20
+                                     px-2 py-0.5 rounded-full text-xs">{{ item }}</span>
                       }
                     </div>
                   </div>
                 }
                 @if (selectedCarnes().length > 0) {
                   <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">
                       Carnes
                     </p>
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-1.5">
                       @for (item of selectedCarnes(); track item) {
-                        <span class="bg-gold/10 text-navy border border-gold/30
-                                     px-3 py-1 rounded-full text-xs font-medium">
-                          {{ item }}
-                        </span>
+                        <span class="bg-gold/10 text-navy border border-gold/20
+                                     px-2 py-0.5 rounded-full text-xs">{{ item }}</span>
                       }
                     </div>
                   </div>
                 }
                 @if (selectedAcompanamientos().length > 0) {
                   <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">
                       Acompañamientos
                     </p>
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-1.5">
                       @for (item of selectedAcompanamientos(); track item) {
-                        <span class="bg-gold/10 text-navy border border-gold/30
-                                     px-3 py-1 rounded-full text-xs font-medium">
-                          {{ item }}
-                        </span>
+                        <span class="bg-gold/10 text-navy border border-gold/20
+                                     px-2 py-0.5 rounded-full text-xs">{{ item }}</span>
                       }
                     </div>
                   </div>
                 }
                 @if (selectedPostre()) {
                   <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">
                       Postre
                     </p>
-                    <span class="bg-gold/10 text-navy border border-gold/30
-                                 px-3 py-1 rounded-full text-xs font-medium">
-                      {{ selectedPostre() }}
-                    </span>
+                    <span class="bg-gold/10 text-navy border border-gold/20
+                                 px-2 py-0.5 rounded-full text-xs">{{ selectedPostre() }}</span>
                   </div>
                 }
               </div>
             </div>
 
             <!-- Forma de pago -->
-            <div class="bg-gradient-to-r from-navy to-[#1e293b] p-5 rounded-2xl text-white">
-              <h4 class="font-bold mb-4 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gold"
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6
-                           2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25
-                           2.25 0 0019.5 4.5h-15a2.25 2.25 0
-                           00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/>
-                </svg>
-                Forma de Pago
-              </h4>
-              <div class="grid grid-cols-2 gap-3 mb-4">
-                <div class="bg-white/10 rounded-xl p-3 text-center">
+            <div class="bg-navy p-4 rounded-xl text-white">
+              <h4 class="font-bold text-sm mb-3">Forma de Pago</h4>
+              <div class="grid grid-cols-2 gap-3 mb-3">
+                <div class="bg-white/10 rounded-lg p-3 text-center">
                   <p class="text-white/60 text-xs mb-1">Para apartar (50%)</p>
-                  <p class="text-xl font-bold text-gold">
+                  <p class="text-base font-bold text-gold">
                     ₡{{ formatNumber(deposito()) }}
                   </p>
                 </div>
-                <div class="bg-white/10 rounded-xl p-3 text-center">
+                <div class="bg-white/10 rounded-lg p-3 text-center">
                   <p class="text-white/60 text-xs mb-1">Día del evento (50%)</p>
-                  <p class="text-xl font-bold text-gold">
+                  <p class="text-base font-bold text-gold">
                     ₡{{ formatNumber(restante()) }}
                   </p>
                 </div>
               </div>
-              <div class="border-t border-white/20 pt-3">
-                <p class="text-xs text-white/60 flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0"
-                       fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                  Método: SINPE Móvil — El número se enviará al confirmar
-                </p>
-              </div>
+              <p class="text-xs text-white/50">
+                Método: SINPE Móvil — El número se enviará al confirmar
+              </p>
             </div>
 
-            <!-- Nota PDF -->
-            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4
-                        flex items-start gap-3">
+            <!-- Tip PDF -->
+            <div class="bg-blue-50 border border-blue-100 rounded-xl p-3
+                        flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg"
-                   class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5"
+                   class="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5"
                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <p class="text-xs text-blue-700 leading-relaxed">
+              <p class="text-xs text-blue-600">
                 <span class="font-bold">Tip:</span> Descargá el PDF y adjuntalo
-                en WhatsApp para que tengamos todos los detalles organizados.
+                en WhatsApp con tu solicitud.
               </p>
             </div>
           </div>
         }
 
         <!-- NAVEGACIÓN -->
-        <div class="mt-8 pt-6 border-t border-gray-100">
+        <div class="mt-6 pt-4 border-t border-gray-100">
 
           <!-- Pasos 1-3 -->
           @if (currentStep() < totalSteps) {
             <div class="flex justify-between items-center">
               @if (currentStep() > 1) {
                 <button (click)="prevStep()"
-                        class="flex items-center gap-2 px-5 py-3 border-2 border-gray-300
-                               text-gray-600 rounded-xl hover:border-navy hover:text-navy
-                               transition-all duration-300 font-semibold text-sm">
+                        class="flex items-center gap-1.5 px-4 py-2 border border-gray-200
+                               text-gray-500 rounded-lg hover:border-navy hover:text-navy
+                               transition-all text-sm font-semibold">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                   </svg>
-                  Anterior
+                  Atrás
                 </button>
               }
               <button (click)="nextStep()"
-                      class="flex items-center gap-2 px-6 py-3 bg-gold text-navy
-                             rounded-xl hover:bg-gold-light transition-all duration-300
-                             ml-auto font-bold shadow-lg transform hover:scale-105 text-sm">
+                      class="flex items-center gap-1.5 px-5 py-2 bg-gold text-navy
+                             rounded-lg transition-all ml-auto font-bold text-sm
+                             hover:bg-gold-light shadow-md">
                 Siguiente
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
                      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -608,14 +544,15 @@
             </div>
           }
 
-          <!-- Paso 4 — botones en columna -->
+          <!-- Paso 4 -->
           @if (currentStep() === totalSteps) {
-            <div class="flex flex-col gap-3">
+            <div class="space-y-2">
 
+              <!-- WhatsApp -->
               <button (click)="submitForm()"
-                      class="w-full flex items-center justify-center gap-2 px-6 py-4
-                             bg-[#25D366] text-white rounded-xl hover:bg-[#128C7E]
-                             transition-all duration-300 font-bold shadow-lg">
+                      class="w-full flex items-center justify-center gap-2 px-4 py-3
+                             bg-[#25D366] text-white rounded-lg font-bold text-sm
+                             hover:bg-[#128C7E] transition-all shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                      fill="currentColor" viewBox="0 0 24 24">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -623,12 +560,13 @@
                 Solicitar por WhatsApp
               </button>
 
+              <!-- PDF -->
               <button (click)="descargarPDF()"
                       [disabled]="generandoPdf()"
-                      class="w-full flex items-center justify-center gap-2 px-6 py-3
-                             border-2 border-navy text-navy rounded-xl hover:bg-navy
-                             hover:text-white transition-all duration-300 font-bold
-                             disabled:opacity-50 disabled:cursor-not-allowed text-sm">
+                      class="w-full flex items-center justify-center gap-2 px-4 py-2.5
+                             border border-navy text-navy rounded-lg font-semibold text-sm
+                             hover:bg-navy hover:text-white transition-all
+                             disabled:opacity-40 disabled:cursor-not-allowed">
                 @if (generandoPdf()) {
                   <svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg"
                        fill="none" viewBox="0 0 24 24">
@@ -637,7 +575,7 @@
                     <path class="opacity-75" fill="currentColor"
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                   </svg>
-                  Generando PDF...
+                  Generando...
                 } @else {
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -651,21 +589,21 @@
                 }
               </button>
 
+              <!-- Atrás -->
               <button (click)="prevStep()"
-                      class="w-full flex items-center justify-center gap-2 px-5 py-3
-                             border-2 border-gray-200 text-gray-500 rounded-xl
-                             hover:border-gray-400 hover:text-gray-700
-                             transition-all duration-300 font-semibold text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
+                      class="w-full flex items-center justify-center gap-1.5 px-4 py-2
+                             border border-gray-200 text-gray-400 rounded-lg text-xs
+                             hover:text-gray-600 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5"
                      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                 </svg>
-                Anterior
+                Volver al paso anterior
               </button>
             </div>
 
-            <p class="text-center text-xs text-gray-400 mt-4">
-              Descargá el PDF y adjuntalo en WhatsApp junto con tu solicitud
+            <p class="text-center text-xs text-gray-400 mt-3">
+              Descargá el PDF y adjuntalo en WhatsApp con tu solicitud
             </p>
           }
         </div>

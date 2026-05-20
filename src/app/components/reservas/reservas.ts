@@ -1,4 +1,4 @@
-import { Component, signal, computed, ElementRef, ViewChild } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -160,18 +160,12 @@ export class ReservasComponent {
       1: 'Información del Evento',
       2: 'Elegí tu Paquete',
       3: 'Menú y Bebidas',
-      4: 'Resumen de tu Cotización',
+      4: 'Resumen',
     };
     return titles[step] || '';
   }
 
   formatFecha(fecha: string): string {
-    if (!fecha) return '';
-    const [year, month, day] = fecha.split('-');
-    return `${day}/${month}/${year}`;
-  }
-
-  formatFechaDisplay(fecha: string): string {
     if (!fecha) return '';
     const [year, month, day] = fecha.split('-');
     return `${day}/${month}/${year}`;
@@ -242,7 +236,7 @@ export class ReservasComponent {
     return String(value);
   }
 
-    async descargarPDF() {
+  async descargarPDF() {
     this.generandoPdf.set(true);
     try {
       const { default: jsPDF } = await import('jspdf');
@@ -263,13 +257,23 @@ export class ReservasComponent {
       const contentW = pageW - margin * 2;
       let y = 0;
 
+      const fmt = (n: number) => n.toLocaleString('es-CR');
+
+      // Verificar si necesitamos nueva página
+      const checkPage = (espacioNecesario: number) => {
+        if (y + espacioNecesario > pageH - 30) {
+          doc.addPage();
+          y = 20;
+        }
+      };
+
       // ── HEADER ──────────────────────────────────────────
       doc.setFillColor(...navy);
       doc.rect(0, 0, pageW, 42, 'F');
-
-      // Barra dorada izquierda decorativa
       doc.setFillColor(...gold);
       doc.rect(0, 0, 4, 42, 'F');
+      doc.setFillColor(...gold);
+      doc.rect(0, 42, pageW, 1.5, 'F');
 
       doc.setTextColor(...white);
       doc.setFontSize(20);
@@ -286,13 +290,9 @@ export class ReservasComponent {
       doc.setFont('helvetica', 'bold');
       doc.text('COTIZACION DE EVENTO', pageW / 2, 33, { align: 'center' });
 
-      // Línea dorada inferior del header
-      doc.setFillColor(...gold);
-      doc.rect(0, 42, pageW, 1.5, 'F');
-
       y = 52;
 
-      // Número y fecha en fondo gris suave
+      // Número y fecha
       doc.setFillColor(...grayLight);
       doc.roundedRect(margin, y - 4, contentW, 12, 2, 2, 'F');
       const numCot = `COT-${Date.now().toString().slice(-6)}`;
@@ -300,32 +300,29 @@ export class ReservasComponent {
       doc.setFontSize(8);
       doc.setTextColor(...grayText);
       doc.setFont('helvetica', 'bold');
-      doc.text(`N. ${numCot}`, margin + 4, y + 3);
+      doc.text(`No. ${numCot}`, margin + 4, y + 3);
       doc.setFont('helvetica', 'normal');
-      doc.text(`Emitido: ${hoy}`, pageW - margin - 4, y + 3, { align: 'right' });
-
+      doc.text(`Fecha: ${hoy}`, pageW - margin - 4, y + 3, { align: 'right' });
       y += 16;
 
-      // ── HELPER: título de sección ────────────────────────
-      const titulo = (texto: string, icono?: string) => {
-        // Barra lateral dorada
-        doc.setFillColor(...gold);
-        doc.rect(margin, y, 2, 8, 'F');
-        // Fondo navy
+      // ── HELPERS ─────────────────────────────────────────
+      const titulo = (texto: string) => {
+        checkPage(20);
         doc.setFillColor(...navy);
-        doc.rect(margin + 2, y, contentW - 2, 8, 'F');
+        doc.rect(margin, y, contentW, 8, 'F');
+        doc.setFillColor(...gold);
+        doc.rect(margin, y, 3, 8, 'F');
         doc.setTextColor(...white);
         doc.setFontSize(8.5);
         doc.setFont('helvetica', 'bold');
         doc.text(texto.toUpperCase(), margin + 8, y + 5.5);
         y += 13;
-        doc.setTextColor(...dark);
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(9);
       };
 
-      // ── HELPER: fila ─────────────────────────────────────
       const fila = (label: string, valor: string) => {
+        checkPage(10);
         doc.setFillColor(250, 250, 250);
         doc.rect(margin, y - 3, contentW, 7, 'F');
         doc.setFont('helvetica', 'bold');
@@ -338,54 +335,52 @@ export class ReservasComponent {
         y += 8;
       };
 
-      // ── HELPER: ítem de lista ────────────────────────────
-      const item = (texto: string) => {
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(...dark);
-        doc.setFontSize(8.5);
-        const lines = doc.splitTextToSize(texto, contentW - 16);
-        doc.text('-', margin + 6, y);
-        lines.forEach((line: string, i: number) => {
-          doc.text(line, margin + 10, y);
-          y += 5;
-        });
-      };
-
-      // ── HELPER: subcategoría menú ─────────────────────────
       const subcat = (nombre: string) => {
-        doc.setFillColor(...gold);
-        doc.setTextColor(...navy);
+        checkPage(12);
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8.5);
+        doc.setTextColor(...navy);
         doc.text(`${nombre}:`, margin + 4, y);
         y += 6;
       };
 
-      // ── SECCIÓN: Datos del cliente ───────────────────────
+      const itemLista = (texto: string) => {
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...dark);
+        doc.setFontSize(8.5);
+        const lines = doc.splitTextToSize(texto, contentW - 18);
+        lines.forEach((line: string, i: number) => {
+          checkPage(6);
+          doc.text(i === 0 ? `• ${line}` : `  ${line}`, margin + 8, y);
+          y += 5;
+        });
+      };
+
+      // ── DATOS DEL CLIENTE ────────────────────────────────
       titulo('Datos del Cliente');
       fila('Nombre', this.safe(this.fullName()));
       fila('Telefono', this.safe(this.phone()));
       fila('Correo', this.safe(this.email()));
-      y += 4;
+      y += 5;
 
-      // ── SECCIÓN: Detalles del evento ─────────────────────
+      // ── DETALLES DEL EVENTO ──────────────────────────────
       titulo('Detalles del Evento');
-      fila('Tipo de evento', this.safe(this.eventType()));
-      fila('Fecha', this.formatFechaDisplay(this.eventDate()));
+      fila('Tipo', this.safe(this.eventType()));
+      fila('Fecha', this.formatFecha(this.eventDate()));
       fila('Personas', `${this.safe(this.guestCount())} personas`);
-      y += 4;
+      y += 5;
 
-      // ── SECCIÓN: Paquete ─────────────────────────────────
+      // ── PAQUETE ──────────────────────────────────────────
       titulo('Paquete Elegido');
       if (pkg) {
-        // Tarjeta del paquete
+        checkPage(30);
         doc.setFillColor(...grayLight);
-        doc.roundedRect(margin, y, contentW, 26, 3, 3, 'F');
+        doc.roundedRect(margin, y, contentW, 24, 3, 3, 'F');
         doc.setFillColor(...gold);
-        doc.roundedRect(margin, y, 3, 26, 3, 3, 'F');
+        doc.roundedRect(margin, y, 3, 24, 3, 3, 'F');
 
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(13);
+        doc.setFontSize(12);
         doc.setTextColor(...navy);
         doc.text(`Paquete ${pkg.name}`, margin + 8, y + 9);
 
@@ -397,13 +392,12 @@ export class ReservasComponent {
           margin + 8, y + 17
         );
 
-        // Total destacado
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(14);
+        doc.setFontSize(13);
         doc.setTextColor(...gold);
         doc.text(
-          `CRC ${this.formatNumber(this.totalEstimado())}`,
-          pageW - margin - 5, y + 10,
+          `CRC ${fmt(this.totalEstimado())}`,
+          pageW - margin - 5, y + 9,
           { align: 'right' }
         );
         doc.setFont('helvetica', 'normal');
@@ -411,44 +405,44 @@ export class ReservasComponent {
         doc.setTextColor(...grayText);
         doc.text('Total estimado', pageW - margin - 5, y + 17, { align: 'right' });
 
-        y += 32;
+        y += 30;
       }
 
-      // ── SECCIÓN: Menú ────────────────────────────────────
+      // ── MENÚ ─────────────────────────────────────────────
       titulo('Menu Seleccionado');
 
       if (this.selectedEntradas().length > 0) {
         subcat('Entradas');
-        this.selectedEntradas().forEach(e => item(e));
-        y += 2;
+        this.selectedEntradas().forEach(e => itemLista(e));
+        y += 3;
       }
       if (this.selectedCarnes().length > 0) {
         subcat('Carnes');
-        this.selectedCarnes().forEach(c => item(c));
-        y += 2;
+        this.selectedCarnes().forEach(c => itemLista(c));
+        y += 3;
       }
       if (this.selectedAcompanamientos().length > 0) {
         subcat('Acompañamientos');
-        this.selectedAcompanamientos().forEach(a => item(a));
-        y += 2;
+        this.selectedAcompanamientos().forEach(a => itemLista(a));
+        y += 3;
       }
       if (this.selectedPostre()) {
         subcat('Postre');
-        item(this.selectedPostre());
-        y += 2;
+        itemLista(this.selectedPostre());
+        y += 3;
       }
-      y += 4;
+      y += 5;
 
-      // ── SECCIÓN: Forma de pago ───────────────────────────
+      // ── FORMA DE PAGO ────────────────────────────────────
+      checkPage(60);
       titulo('Forma de Pago');
 
       const mitad = (contentW / 2) - 3;
 
-      // Tarjeta izquierda
       doc.setFillColor(...navy);
-      doc.roundedRect(margin, y, mitad, 26, 3, 3, 'F');
+      doc.roundedRect(margin, y, mitad, 24, 3, 3, 'F');
       doc.setFillColor(...gold);
-      doc.roundedRect(margin, y, mitad, 2, 3, 3, 'F');
+      doc.roundedRect(margin, y, mitad, 2.5, 3, 3, 'F');
       doc.setTextColor(...white);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(7.5);
@@ -457,16 +451,15 @@ export class ReservasComponent {
       doc.setFontSize(11);
       doc.setTextColor(...gold);
       doc.text(
-        `CRC ${this.formatNumber(this.deposito())}`,
-        margin + mitad / 2, y + 20,
+        `CRC ${fmt(this.deposito())}`,
+        margin + mitad / 2, y + 19,
         { align: 'center' }
       );
 
-      // Tarjeta derecha
       doc.setFillColor(...navyMid);
-      doc.roundedRect(margin + mitad + 6, y, mitad, 26, 3, 3, 'F');
+      doc.roundedRect(margin + mitad + 6, y, mitad, 24, 3, 3, 'F');
       doc.setFillColor(...gold);
-      doc.roundedRect(margin + mitad + 6, y, mitad, 2, 3, 3, 'F');
+      doc.roundedRect(margin + mitad + 6, y, mitad, 2.5, 3, 3, 'F');
       doc.setTextColor(...white);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(7.5);
@@ -475,53 +468,52 @@ export class ReservasComponent {
       doc.setFontSize(11);
       doc.setTextColor(...gold);
       doc.text(
-        `CRC ${this.formatNumber(this.restante())}`,
-        margin + mitad + 6 + mitad / 2, y + 20,
+        `CRC ${fmt(this.restante())}`,
+        margin + mitad + 6 + mitad / 2, y + 19,
         { align: 'center' }
       );
 
-      y += 32;
+      y += 30;
 
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
+      doc.setFontSize(7.5);
       doc.setTextColor(...grayText);
       doc.text(
-        'Metodo: SINPE Movil  -  El numero se enviara al confirmar la reserva.',
+        'Metodo: SINPE Movil - El numero se enviara al confirmar la reserva.',
         margin + 4, y
       );
 
-      // ── FOOTER ──────────────────────────────────────────
-      // Siempre al fondo de la página
-      const footerY = pageH - 22;
+      y += 12;
 
+      // ── FOOTER ──────────────────────────────────────────
       doc.setFillColor(...gold);
-      doc.rect(0, footerY, pageW, 0.8, 'F');
+      doc.rect(0, y, pageW, 1, 'F');
+      y += 1;
 
       doc.setFillColor(...navy);
-      doc.rect(0, footerY + 0.8, pageW, 21.2, 'F');
-
+      doc.rect(0, y, pageW, 20, 'F');
       doc.setFillColor(...gold);
-      doc.rect(0, footerY + 0.8, 4, 21.2, 'F');
+      doc.rect(0, y, 4, 20, 'F');
 
       doc.setFontSize(9);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(...white);
-      doc.text('Rancho Sacuanjoche', pageW / 2, footerY + 8, { align: 'center' });
+      doc.text('Rancho Sacuanjoche', pageW / 2, y + 7, { align: 'center' });
 
       doc.setFontSize(7.5);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(180, 180, 180);
       doc.text(
         'Santa Cruz, Guanacaste, Costa Rica  |  ranchosacuanjoche.com',
-        pageW / 2, footerY + 14,
+        pageW / 2, y + 13,
         { align: 'center' }
       );
 
       doc.setFontSize(6.5);
       doc.setTextColor(...gold);
       doc.text(
-        'Esta cotizacion es valida por 15 dias. Precios sujetos a cambios sin previo aviso.',
-        pageW / 2, footerY + 20,
+        'Esta cotizacion es valida por 15 dias. Precios sujetos a cambios.',
+        pageW / 2, y + 19,
         { align: 'center' }
       );
 
@@ -539,15 +531,15 @@ export class ReservasComponent {
     const linea = '──────────────────────';
 
     const listaEntradas = this.selectedEntradas().length > 0
-      ? this.selectedEntradas().map(e => `   • ${e}`).join('\n')
+      ? this.selectedEntradas().map(e => `   • ${this.safe(e)}`).join('\n')
       : '   • No seleccionadas';
 
     const listaCarnes = this.selectedCarnes().length > 0
-      ? this.selectedCarnes().map(c => `   • ${c}`).join('\n')
+      ? this.selectedCarnes().map(c => `   • ${this.safe(c)}`).join('\n')
       : '   • No seleccionadas';
 
     const listaAcomps = this.selectedAcompanamientos().length > 0
-      ? this.selectedAcompanamientos().map(a => `   • ${a}`).join('\n')
+      ? this.selectedAcompanamientos().map(a => `   • ${this.safe(a)}`).join('\n')
       : '   • No seleccionados';
 
     const postre = this.selectedPostre() || 'No seleccionado';
@@ -573,7 +565,7 @@ export class ReservasComponent {
       '',
       '*PAQUETE ELEGIDO*',
       `• ${this.safe(pkg?.name)} - ${this.safe(pkg?.price)} por persona`,
-      `• Total estimado: (C)${this.formatNumber(this.totalEstimado())}`,
+      `• Total estimado: CRC ${this.formatNumber(this.totalEstimado())}`,
       '',
       linea,
       '',
@@ -594,8 +586,8 @@ export class ReservasComponent {
       linea,
       '',
       '*FORMA DE PAGO*',
-      `• Para apartar (50%): (C)${this.formatNumber(this.deposito())}`,
-      `• Dia del evento (50%): (C)${this.formatNumber(this.restante())}`,
+      `• Para apartar (50%): CRC ${this.formatNumber(this.deposito())}`,
+      `• Dia del evento (50%): CRC ${this.formatNumber(this.restante())}`,
       '• Metodo: SINPE Movil',
       '  _(El numero se enviara al confirmar)_',
       '',
