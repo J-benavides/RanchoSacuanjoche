@@ -1,0 +1,88 @@
+<section id="gallery" class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="text-center mb-16">
+      <h2 class="text-4xl sm:text-5xl font-bold text-navy mb-4">
+        Nuestra <span class="text-gold">Galería</span>
+      </h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Espacios transformados en experiencias memorables
+      </p>
+    </div>
+
+    <!-- Masonry grid -->
+    <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+      @for (image of images; track image.alt; let i = $index) {
+        <div class="break-inside-avoid group relative cursor-pointer
+                    overflow-hidden rounded-xl"
+             (click)="openImage(i)">
+          <img [src]="image.url" [alt]="image.alt"
+               class="w-full h-auto transform group-hover:scale-110
+                      transition-transform duration-500"/>
+          <div class="absolute inset-0 bg-navy/0 group-hover:bg-navy/40
+                      transition-colors duration-300 flex items-center justify-center">
+            <span class="text-white opacity-0 group-hover:opacity-100
+                         transition-opacity duration-300 text-lg font-semibold">
+              Ver imagen
+            </span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  @if (selectedImage() !== null) {
+    <div class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+         (click)="closeImage()">
+
+      <button class="absolute top-4 right-4 text-white hover:text-gold
+                     transition-colors p-2 z-10"
+              (click)="closeImage()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- Prev -->
+      <button class="absolute left-4 text-white hover:text-gold transition-colors p-2"
+              (click)="$event.stopPropagation(); prevImage()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 19l-7-7 7-7"/>
+        </svg>
+      </button>
+
+      <img [src]="images[selectedImage()!].url"
+           [alt]="images[selectedImage()!].alt"
+           class="max-w-full max-h-full object-contain"
+           (click)="$event.stopPropagation()"/>
+
+      <!-- Next -->
+      <button class="absolute right-4 text-white hover:text-gold transition-colors p-2"
+              (click)="$event.stopPropagation(); nextImage()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+
+      <!-- Dots -->
+      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+        @for (image of images; track image.alt; let i = $index) {
+          <button class="h-2 rounded-full transition-all"
+                  [class.bg-gold]="i === selectedImage()"
+                  [class.w-8]="i === selectedImage()"
+                  [class.bg-white]="i !== selectedImage()"
+                  [class.w-2]="i !== selectedImage()"
+                  (click)="$event.stopPropagation(); openImage(i)">
+          </button>
+        }
+      </div>
+    </div>
+  }
+</section>

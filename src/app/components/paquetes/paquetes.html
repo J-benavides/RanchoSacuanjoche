@@ -1,0 +1,103 @@
+<section id="packages" class="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-gray-50">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="text-center mb-20">
+      <h2 class="text-4xl sm:text-5xl font-bold text-navy mb-4">
+        Nuestros <span class="text-gold">Paquetes</span>
+      </h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Perfectos para quinceañeras, bodas y cenas de graduación
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+      @for (pkg of paquetes; track pkg.name) {
+        <div class="relative"
+             [class.lg:scale-105]="pkg.featured"
+             [class.z-10]="pkg.featured">
+
+          @if (pkg.featured) {
+            <div class="absolute -top-5 left-1/2 transform -translate-x-1/2
+                        bg-gold text-navy px-6 py-2 rounded-full text-sm
+                        font-bold z-10 shadow-lg flex items-center gap-2">
+              ⭐ Más Popular
+            </div>
+          }
+
+          <div class="h-full bg-white rounded-2xl overflow-hidden shadow-xl
+                      hover:shadow-2xl transition-all duration-300 flex flex-col"
+               [class.border-2]="pkg.isPremium"
+               [class.border-gold]="pkg.isPremium"
+               [class.border]="!pkg.isPremium"
+               [class.border-gray-200]="!pkg.isPremium">
+
+            <div class="p-8 sm:p-10 flex flex-col h-full">
+
+              <!-- Header -->
+              <div class="mb-6">
+                <h3 class="text-2xl font-bold text-navy mb-2">{{ pkg.name }}</h3>
+                <p class="text-gray-600 italic text-sm leading-relaxed mb-6">
+                  {{ pkg.slogan }}
+                </p>
+                <div class="flex items-baseline gap-2 mb-1">
+                  <span class="text-5xl font-bold text-gold">{{ pkg.price }}</span>
+                </div>
+                <p class="text-sm text-gray-600">por persona</p>
+                <p class="text-sm font-semibold text-navy mt-2">{{ pkg.minCapacity }}</p>
+              </div>
+
+              <!-- Features -->
+              <div class="flex-grow mb-8">
+                <p class="text-sm font-bold text-navy mb-3">Incluye:</p>
+                <ul class="space-y-3">
+                  @for (feature of pkg.features; track feature) {
+                    <li class="flex items-start gap-3">
+                      <span class="text-gold mt-1 flex-shrink-0">◆</span>
+                      <span class="text-sm text-gray-700 leading-relaxed">{{ feature }}</span>
+                    </li>
+                  }
+                </ul>
+
+                @if (pkg.isPremium && pkg.premiumExtras.length > 0) {
+                  <div class="mt-6 pt-6 border-t-2 border-gold/30">
+                    <p class="text-sm font-bold text-gold mb-3">
+                      ✨ Experiencias Especiales Únicas
+                    </p>
+                    <ul class="space-y-3">
+                      @for (extra of pkg.premiumExtras; track extra) {
+                        <li class="flex items-start gap-3">
+                          <span class="text-gold mt-1 flex-shrink-0">✨</span>
+                          <span class="text-sm text-gray-700 font-medium">{{ extra }}</span>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                }
+              </div>
+
+              <!-- CTA -->
+                <button (click)="scrollToBooking()"
+                        class="w-full py-4 rounded-xl transition-all duration-300
+                            font-semibold transform hover:scale-105
+                            border-2 border-gold text-gold
+                            hover:bg-gold hover:text-navy">
+                Elegir {{ pkg.name }}
+                </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="mt-16 text-center">
+      <p class="text-gray-600 text-lg">
+        ¿Necesitás algo personalizado?
+        <button (click)="scrollToBooking()"
+                class="text-gold hover:text-navy font-semibold underline transition-colors ml-1">
+          Contáctanos
+        </button>
+        para crear un paquete a tu medida
+      </p>
+    </div>
+  </div>
+</section>

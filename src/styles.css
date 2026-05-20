@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap');
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: #ffffff;
+  color: #0a1628;
+  font-family: 'Josefin Sans', sans-serif;
+}
