@@ -11,6 +11,6 @@ export class WhatsappBtnComponent {
     const msg = encodeURIComponent(
       'Hola Rancho Sacuanjoche, me gustaría obtener más información sobre sus eventos y paquetes.'
     );
-    window.open(`https://wa.me/50672409272?text=${msg}`, '_blank');
+    window.open(`https://wa.me/50662969944?text=${msg}`, '_blank');
   }
 }

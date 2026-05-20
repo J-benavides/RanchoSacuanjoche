@@ -171,6 +171,12 @@ export class ReservasComponent {
     return `${day}/${month}/${year}`;
   }
 
+  formatFechaDisplay(fecha: string): string {
+    if (!fecha) return '';
+    const [year, month, day] = fecha.split('-');
+    return `${day}/${month}/${year}`;
+  }
+
   nextStep() {
     if (this.currentStep() < this.totalSteps) {
       this.currentStep.update(s => s + 1);
@@ -236,180 +242,291 @@ export class ReservasComponent {
     return String(value);
   }
 
-  async descargarPDF() {
+    async descargarPDF() {
     this.generandoPdf.set(true);
     try {
       const { default: jsPDF } = await import('jspdf');
       const pkg = this.selectedPackageData();
       const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
-      const navy = [10, 22, 40] as [number, number, number];
-      const gold = [201, 168, 76] as [number, number, number];
-      const white = [255, 255, 255] as [number, number, number];
-      const grayLight = [248, 248, 248] as [number, number, number];
-      const grayText = [100, 100, 100] as [number, number, number];
+      const navy: [number,number,number] = [10, 22, 40];
+      const navyMid: [number,number,number] = [21, 42, 82];
+      const gold: [number,number,number] = [201, 168, 76];
+      const white: [number,number,number] = [255, 255, 255];
+      const grayLight: [number,number,number] = [245, 245, 245];
+      const grayText: [number,number,number] = [120, 120, 120];
+      const dark: [number,number,number] = [40, 40, 40];
 
       const pageW = 210;
-      const margin = 15;
+      const pageH = 297;
+      const margin = 14;
       const contentW = pageW - margin * 2;
       let y = 0;
 
-      // Header
+      // ── HEADER ──────────────────────────────────────────
       doc.setFillColor(...navy);
-      doc.rect(0, 0, pageW, 35, 'F');
+      doc.rect(0, 0, pageW, 42, 'F');
+
+      // Barra dorada izquierda decorativa
       doc.setFillColor(...gold);
-      doc.rect(0, 35, pageW, 3, 'F');
+      doc.rect(0, 0, 4, 42, 'F');
 
       doc.setTextColor(...white);
       doc.setFontSize(20);
       doc.setFont('helvetica', 'bold');
-      doc.text('RANCHO SACUANJOCHE', pageW / 2, 15, { align: 'center' });
-      doc.setFontSize(10);
+      doc.text('RANCHO SACUANJOCHE', pageW / 2, 16, { align: 'center' });
+
+      doc.setFontSize(8.5);
       doc.setFont('helvetica', 'normal');
-      doc.text('Sala de Eventos | Santa Cruz, Costa Rica', pageW / 2, 23, { align: 'center' });
-      doc.setFontSize(9);
-      doc.text('COTIZACION DE EVENTO', pageW / 2, 31, { align: 'center' });
+      doc.setTextColor(200, 200, 200);
+      doc.text('Sala de Eventos  |  Santa Cruz, Guanacaste, Costa Rica', pageW / 2, 24, { align: 'center' });
 
-      y = 48;
+      doc.setFontSize(8);
+      doc.setTextColor(...gold);
+      doc.setFont('helvetica', 'bold');
+      doc.text('COTIZACION DE EVENTO', pageW / 2, 33, { align: 'center' });
 
-      // Numero de cotizacion y fecha
+      // Línea dorada inferior del header
+      doc.setFillColor(...gold);
+      doc.rect(0, 42, pageW, 1.5, 'F');
+
+      y = 52;
+
+      // Número y fecha en fondo gris suave
+      doc.setFillColor(...grayLight);
+      doc.roundedRect(margin, y - 4, contentW, 12, 2, 2, 'F');
       const numCot = `COT-${Date.now().toString().slice(-6)}`;
       const hoy = new Date().toLocaleDateString('es-CR');
       doc.setFontSize(8);
       doc.setTextColor(...grayText);
-      doc.text(`No. ${numCot}`, margin, y);
-      doc.text(`Fecha: ${hoy}`, pageW - margin, y, { align: 'right' });
-      y += 8;
+      doc.setFont('helvetica', 'bold');
+      doc.text(`N. ${numCot}`, margin + 4, y + 3);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Emitido: ${hoy}`, pageW - margin - 4, y + 3, { align: 'right' });
 
-      // Seccion helper
-      const seccion = (titulo: string) => {
+      y += 16;
+
+      // ── HELPER: título de sección ────────────────────────
+      const titulo = (texto: string, icono?: string) => {
+        // Barra lateral dorada
+        doc.setFillColor(...gold);
+        doc.rect(margin, y, 2, 8, 'F');
+        // Fondo navy
         doc.setFillColor(...navy);
-        doc.rect(margin, y, contentW, 7, 'F');
-        doc.setTextColor(...gold);
-        doc.setFontSize(9);
+        doc.rect(margin + 2, y, contentW - 2, 8, 'F');
+        doc.setTextColor(...white);
+        doc.setFontSize(8.5);
         doc.setFont('helvetica', 'bold');
-        doc.text(titulo.toUpperCase(), margin + 3, y + 5);
-        y += 12;
-        doc.setTextColor(50, 50, 50);
+        doc.text(texto.toUpperCase(), margin + 8, y + 5.5);
+        y += 13;
+        doc.setTextColor(...dark);
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(9);
       };
 
-      const fila = (label: string, valor: string, negrita = false) => {
+      // ── HELPER: fila ─────────────────────────────────────
+      const fila = (label: string, valor: string) => {
+        doc.setFillColor(250, 250, 250);
+        doc.rect(margin, y - 3, contentW, 7, 'F');
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(...navy);
-        doc.text(`${label}:`, margin + 3, y);
-        doc.setFont('helvetica', negrita ? 'bold' : 'normal');
-        doc.setTextColor(50, 50, 50);
-        doc.text(valor, margin + 35, y);
+        doc.setFontSize(8.5);
+        doc.text(`${label}:`, margin + 4, y + 1);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...dark);
+        doc.text(valor, margin + 42, y + 1);
+        y += 8;
+      };
+
+      // ── HELPER: ítem de lista ────────────────────────────
+      const item = (texto: string) => {
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...dark);
+        doc.setFontSize(8.5);
+        const lines = doc.splitTextToSize(texto, contentW - 16);
+        doc.text('-', margin + 6, y);
+        lines.forEach((line: string, i: number) => {
+          doc.text(line, margin + 10, y);
+          y += 5;
+        });
+      };
+
+      // ── HELPER: subcategoría menú ─────────────────────────
+      const subcat = (nombre: string) => {
+        doc.setFillColor(...gold);
+        doc.setTextColor(...navy);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.text(`${nombre}:`, margin + 4, y);
         y += 6;
       };
 
-      // Datos del cliente
-      seccion('Datos del Cliente');
+      // ── SECCIÓN: Datos del cliente ───────────────────────
+      titulo('Datos del Cliente');
       fila('Nombre', this.safe(this.fullName()));
       fila('Telefono', this.safe(this.phone()));
       fila('Correo', this.safe(this.email()));
-      y += 3;
+      y += 4;
 
-      // Detalles del evento
-      seccion('Detalles del Evento');
-      fila('Tipo', this.safe(this.eventType()));
-      fila('Fecha', this.formatFecha(this.eventDate()));
+      // ── SECCIÓN: Detalles del evento ─────────────────────
+      titulo('Detalles del Evento');
+      fila('Tipo de evento', this.safe(this.eventType()));
+      fila('Fecha', this.formatFechaDisplay(this.eventDate()));
       fila('Personas', `${this.safe(this.guestCount())} personas`);
-      y += 3;
+      y += 4;
 
-      // Paquete
-      seccion('Paquete Elegido');
+      // ── SECCIÓN: Paquete ─────────────────────────────────
+      titulo('Paquete Elegido');
       if (pkg) {
+        // Tarjeta del paquete
         doc.setFillColor(...grayLight);
-        doc.rect(margin, y - 2, contentW, 20, 'F');
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(12);
-        doc.setTextColor(...navy);
-        doc.text(`Paquete ${pkg.name}`, margin + 3, y + 5);
-        doc.setFontSize(9);
-        doc.setTextColor(...grayText);
-        doc.text(`${pkg.price} por persona x ${this.guestCount()} personas`, margin + 3, y + 11);
+        doc.roundedRect(margin, y, contentW, 26, 3, 3, 'F');
+        doc.setFillColor(...gold);
+        doc.roundedRect(margin, y, 3, 26, 3, 3, 'F');
+
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(13);
-        doc.setTextColor(...gold);
-        doc.text(`Total: (C)${this.formatNumber(this.totalEstimado())}`, pageW - margin - 3, y + 8, { align: 'right' });
-        y += 25;
-      }
-      y += 3;
-
-      // Menu
-      seccion('Menu Seleccionado');
-
-      const listaMenu = (categoria: string, items: string[]) => {
-        if (items.length === 0) return;
-        doc.setFont('helvetica', 'bold');
         doc.setTextColor(...navy);
-        doc.setFontSize(9);
-        doc.text(`${categoria}:`, margin + 3, y);
-        y += 5;
+        doc.text(`Paquete ${pkg.name}`, margin + 8, y + 9);
+
         doc.setFont('helvetica', 'normal');
-        doc.setTextColor(60, 60, 60);
-        items.forEach(item => {
-          doc.text(`• ${item}`, margin + 8, y);
-          y += 5;
-        });
-        y += 2;
-      };
+        doc.setFontSize(8);
+        doc.setTextColor(...grayText);
+        doc.text(
+          `${pkg.price} por persona  x  ${this.guestCount()} personas`,
+          margin + 8, y + 17
+        );
 
-      listaMenu('Entradas', this.selectedEntradas());
-      listaMenu('Carnes', this.selectedCarnes());
-      listaMenu('Acompañamientos', this.selectedAcompanamientos());
-      if (this.selectedPostre()) {
-        listaMenu('Postre', [this.selectedPostre()]);
+        // Total destacado
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.setTextColor(...gold);
+        doc.text(
+          `CRC ${this.formatNumber(this.totalEstimado())}`,
+          pageW - margin - 5, y + 10,
+          { align: 'right' }
+        );
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7);
+        doc.setTextColor(...grayText);
+        doc.text('Total estimado', pageW - margin - 5, y + 17, { align: 'right' });
+
+        y += 32;
       }
-      y += 3;
 
-      // Forma de pago
-      seccion('Forma de Pago');
+      // ── SECCIÓN: Menú ────────────────────────────────────
+      titulo('Menu Seleccionado');
+
+      if (this.selectedEntradas().length > 0) {
+        subcat('Entradas');
+        this.selectedEntradas().forEach(e => item(e));
+        y += 2;
+      }
+      if (this.selectedCarnes().length > 0) {
+        subcat('Carnes');
+        this.selectedCarnes().forEach(c => item(c));
+        y += 2;
+      }
+      if (this.selectedAcompanamientos().length > 0) {
+        subcat('Acompañamientos');
+        this.selectedAcompanamientos().forEach(a => item(a));
+        y += 2;
+      }
+      if (this.selectedPostre()) {
+        subcat('Postre');
+        item(this.selectedPostre());
+        y += 2;
+      }
+      y += 4;
+
+      // ── SECCIÓN: Forma de pago ───────────────────────────
+      titulo('Forma de Pago');
+
+      const mitad = (contentW / 2) - 3;
+
+      // Tarjeta izquierda
       doc.setFillColor(...navy);
-      doc.rect(margin, y - 2, contentW / 2 - 2, 22, 'F');
-      doc.setFillColor(21, 42, 82);
-      doc.rect(margin + contentW / 2 + 2, y - 2, contentW / 2 - 2, 22, 'F');
-
-      doc.setTextColor(...white);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.text('Para apartar (50%)', margin + contentW / 4, y + 4, { align: 'center' });
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
-      doc.setTextColor(...gold);
-      doc.text(`(C)${this.formatNumber(this.deposito())}`, margin + contentW / 4, y + 13, { align: 'center' });
-
-      doc.setTextColor(...white);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.text('Dia del evento (50%)', margin + contentW * 3 / 4 + 2, y + 4, { align: 'center' });
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
-      doc.setTextColor(...gold);
-      doc.text(`(C)${this.formatNumber(this.restante())}`, margin + contentW * 3 / 4 + 2, y + 13, { align: 'center' });
-
-      y += 27;
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.setTextColor(...grayText);
-      doc.text('Metodo de pago: SINPE Movil. El numero se enviara al confirmar la reserva.', margin + 3, y);
-
-      // Footer
-      y = 275;
+      doc.roundedRect(margin, y, mitad, 26, 3, 3, 'F');
       doc.setFillColor(...gold);
-      doc.rect(0, y, pageW, 0.5, 'F');
-      y += 5;
+      doc.roundedRect(margin, y, mitad, 2, 3, 3, 'F');
+      doc.setTextColor(...white);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.text('Para apartar (50%)', margin + mitad / 2, y + 10, { align: 'center' });
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(...gold);
+      doc.text(
+        `CRC ${this.formatNumber(this.deposito())}`,
+        margin + mitad / 2, y + 20,
+        { align: 'center' }
+      );
+
+      // Tarjeta derecha
+      doc.setFillColor(...navyMid);
+      doc.roundedRect(margin + mitad + 6, y, mitad, 26, 3, 3, 'F');
+      doc.setFillColor(...gold);
+      doc.roundedRect(margin + mitad + 6, y, mitad, 2, 3, 3, 'F');
+      doc.setTextColor(...white);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.text('Dia del evento (50%)', margin + mitad + 6 + mitad / 2, y + 10, { align: 'center' });
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(...gold);
+      doc.text(
+        `CRC ${this.formatNumber(this.restante())}`,
+        margin + mitad + 6 + mitad / 2, y + 20,
+        { align: 'center' }
+      );
+
+      y += 32;
+
+      doc.setFont('helvetica', 'normal');
       doc.setFontSize(8);
       doc.setTextColor(...grayText);
-      doc.text('Rancho Sacuanjoche | Santa Cruz, Guanacaste, Costa Rica', pageW / 2, y, { align: 'center' });
-      doc.text('ranchosacuanjoche.com', pageW / 2, y + 5, { align: 'center' });
-      doc.setFontSize(7);
-      doc.text('Esta cotizacion es valida por 15 dias. Precios sujetos a cambios sin previo aviso.', pageW / 2, y + 10, { align: 'center' });
+      doc.text(
+        'Metodo: SINPE Movil  -  El numero se enviara al confirmar la reserva.',
+        margin + 4, y
+      );
+
+      // ── FOOTER ──────────────────────────────────────────
+      // Siempre al fondo de la página
+      const footerY = pageH - 22;
+
+      doc.setFillColor(...gold);
+      doc.rect(0, footerY, pageW, 0.8, 'F');
+
+      doc.setFillColor(...navy);
+      doc.rect(0, footerY + 0.8, pageW, 21.2, 'F');
+
+      doc.setFillColor(...gold);
+      doc.rect(0, footerY + 0.8, 4, 21.2, 'F');
+
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...white);
+      doc.text('Rancho Sacuanjoche', pageW / 2, footerY + 8, { align: 'center' });
+
+      doc.setFontSize(7.5);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(180, 180, 180);
+      doc.text(
+        'Santa Cruz, Guanacaste, Costa Rica  |  ranchosacuanjoche.com',
+        pageW / 2, footerY + 14,
+        { align: 'center' }
+      );
+
+      doc.setFontSize(6.5);
+      doc.setTextColor(...gold);
+      doc.text(
+        'Esta cotizacion es valida por 15 dias. Precios sujetos a cambios sin previo aviso.',
+        pageW / 2, footerY + 20,
+        { align: 'center' }
+      );
 
       doc.save(`cotizacion-rancho-sacuanjoche-${numCot}.pdf`);
+
     } catch (error) {
       console.error('Error generando PDF:', error);
     } finally {
