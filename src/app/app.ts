@@ -7,6 +7,9 @@ import { PorqueComponent } from './components/porque/porque';
 import { PaquetesComponent } from './components/paquetes/paquetes';
 import { MenuComponent } from './components/menu/menu';
 import { ReservasComponent } from './components/reservas/reservas';
+import { ContactoComponent } from './components/contacto/contacto';
+import { FooterComponent } from './components/footer/footer';
+import { WhatsappBtnComponent } from './components/whatsapp-btn/whatsapp-btn';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +23,9 @@ import { ReservasComponent } from './components/reservas/reservas';
     PaquetesComponent,
     MenuComponent,
     ReservasComponent,
+    ContactoComponent,
+    FooterComponent,
+    WhatsappBtnComponent,
   ],
   template: `
     <app-navbar />
@@ -30,6 +36,9 @@ import { ReservasComponent } from './components/reservas/reservas';
     <app-paquetes />
     <app-menu />
     <app-reservas />
+    <app-contacto />
+    <app-footer />
+    <app-whatsapp-btn />
   `
 })
 export class App {}
