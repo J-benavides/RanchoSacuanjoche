@@ -12,18 +12,19 @@ export class GaleriaComponent {
   selectedImage = signal<number | null>(null);
 
   images = [
-    { url: 'https://images.unsplash.com/photo-1773745060497-4cc1df774c72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Elegant wedding setup' },
-    { url: 'https://images.unsplash.com/photo-1775476793931-cb484f197760?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Outdoor wedding reception' },
-    { url: 'https://images.unsplash.com/photo-1738669469338-801b4e9dbccf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Formal dinner table' },
-    { url: 'https://images.unsplash.com/photo-1766393195987-912865cbb81b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Outdoor lounge area' },
-    { url: 'https://images.unsplash.com/photo-1768851142332-75f3d1b47452?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Elegant banquet hall' },
-    { url: 'https://images.unsplash.com/photo-1769812344081-92b3e2ac39c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Wedding ceremony setup' },
-    { url: 'https://images.unsplash.com/photo-1768851142314-c4ebf49ad45b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Elegant table setting' },
-    { url: 'https://images.unsplash.com/photo-1766393524464-e5eb1b05e4c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Wedding with palm trees' },
-    { url: 'https://images.unsplash.com/photo-1775918427144-51f0bf53f8c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Elegant banquet' },
-    { url: 'https://images.unsplash.com/photo-1660740220701-3612091dd6db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Garden party' },
-    { url: 'https://images.unsplash.com/photo-1769812344191-91994886e4a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Floral arch' },
-    { url: 'https://images.unsplash.com/photo-1761110787206-2cc164e4913c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080', alt: 'Dining room chandeliers' },
+    { url: 'images/Boda.jpg', alt: 'Boda en Rancho Sacuanjoche' },
+    { url: 'images/Boda2.jpg', alt: 'Boda elegante en Rancho Sacuanjoche' },
+    { url: 'images/Graduacion.png', alt: 'Graduación en Rancho Sacuanjoche' },
+    { url: 'images/quince.jpg', alt: 'Quinceañera en Rancho Sacuanjoche' },
+    { url: 'images/Decoracion3.jpg', alt: 'Decoración elegante' },
+    { url: 'images/Entrada.jpg', alt: 'Entrada del salón' },
+    { url: 'images/comida.jpg', alt: 'Menú especial' },
+    { url: 'images/Led1.jpg', alt: 'Luces LED del salón' },
+    { url: 'images/jardin.jpg', alt: 'Área natural y jardín' },
+    { url: 'images/zonaverde.jpg', alt: 'Zona verde del rancho' },
+    { url: 'images/babyShowers.jpg', alt: 'Baby Shower en Rancho Sacuanjoche' },
+    { url: 'images/eventoCorporativo.jpg', alt: 'Evento corporativo' },
+    { url: 'images/fiestaPrivada.png', alt: 'Fiesta privada' },
   ];
 
   openImage(index: number) {
