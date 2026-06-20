@@ -1,0 +1,149 @@
+<div class="min-h-screen flex" style="background: linear-gradient(135deg, #0a1628, #152238);">
+
+  <app-admin-sidebar />
+
+  <div class="flex-1 md:ml-64">
+
+    <header class="sticky top-0 z-40 px-6 py-5"
+            style="background: rgba(10,22,40,0.8); backdrop-filter: blur(16px);
+                   border-bottom: 1px solid rgba(201,168,76,0.2);">
+      <div class="ml-12 md:ml-0">
+        <h1 class="text-2xl font-bold text-white">Calendario</h1>
+        <p class="text-sm" style="color: #9ca3af;">Vista de eventos programados</p>
+      </div>
+    </header>
+
+    <div class="p-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Calendario -->
+        <div class="lg:col-span-2 rounded-2xl p-6 shadow-2xl"
+             style="background: rgba(255,255,255,0.05);
+                    border: 1px solid rgba(201,168,76,0.2);">
+
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-white">{{ getNombreMes() }}</h2>
+            <div class="flex items-center gap-2">
+              <button (click)="mesAnterior()"
+                      class="p-2 rounded-lg transition-all"
+                      style="background: rgba(255,255,255,0.05);
+                             border: 1px solid rgba(201,168,76,0.2);">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                     viewBox="0 0 24 24" stroke="#c9a84c" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+              </button>
+              <button (click)="mesSiguiente()"
+                      class="p-2 rounded-lg transition-all"
+                      style="background: rgba(255,255,255,0.05);
+                             border: 1px solid rgba(201,168,76,0.2);">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                     viewBox="0 0 24 24" stroke="#c9a84c" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Días de la semana -->
+          <div class="grid grid-cols-7 gap-2 mb-3">
+            @for (d of ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb']; track d) {
+              <div class="text-center text-xs font-bold" style="color: #6b7280;">
+                {{ d }}
+              </div>
+            }
+          </div>
+
+          <!-- Días del mes -->
+          <div class="grid grid-cols-7 gap-2">
+            @for (v of diasVacios(); track v) {
+              <div></div>
+            }
+            @for (dia of diasDelMes(); track dia) {
+              <div class="aspect-square flex items-center justify-center
+                          text-sm rounded-xl transition-all cursor-pointer hover:scale-105"
+                   [ngStyle]="getDiaStyle(dia)">
+                {{ dia }}
+              </div>
+            }
+          </div>
+
+          <!-- Leyenda -->
+          <div class="mt-8 pt-6 grid grid-cols-3 gap-4"
+               style="border-top: 1px solid rgba(201,168,76,0.2);">
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded" style="background: #c9a84c;"></div>
+              <span class="text-sm" style="color: #d1d5db;">Confirmado</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded" style="background: #eab308;"></div>
+              <span class="text-sm" style="color: #d1d5db;">Pendiente</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded" style="background: #ef4444;"></div>
+              <span class="text-sm" style="color: #d1d5db;">Cancelado</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Próximos eventos -->
+        <div class="rounded-2xl p-5 h-fit shadow-2xl"
+             style="background: rgba(255,255,255,0.05);
+                    border: 1px solid rgba(201,168,76,0.2);">
+          <div class="flex items-center gap-2 mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                 viewBox="0 0 24 24" stroke="#c9a84c" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0
+                       012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18
+                       0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0
+                       0021 18.75m-18 0v-7.5A2.25 2.25 0
+                       015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+            </svg>
+            <h3 class="text-lg font-bold text-white">Próximos Eventos</h3>
+          </div>
+
+          @if (cargando()) {
+            <p class="text-sm text-center py-6" style="color: #9ca3af;">Cargando...</p>
+          } @else if (proximosEventos().length === 0) {
+            <p class="text-sm text-center py-6" style="color: #9ca3af;">
+              No hay eventos próximos
+            </p>
+          } @else {
+            <div class="space-y-3">
+              @for (e of proximosEventos(); track e.id) {
+                <div (click)="verReserva(e.id)"
+                     class="rounded-xl p-4 cursor-pointer transition-all hover:scale-[1.02]"
+                     style="background: rgba(255,255,255,0.05);
+                            border: 1px solid rgba(201,168,76,0.1);">
+                  <div class="flex items-start justify-between mb-2">
+                    <div>
+                      <p class="text-white font-semibold text-sm">{{ e.nombreCliente }}</p>
+                      <p class="text-xs" style="color: #9ca3af;">{{ e.tipoEvento }}</p>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full border"
+                          [class]="getEstadoColor(e.estado)">
+                      {{ getEstadoLabel(e.estado) }}
+                    </span>
+                  </div>
+                  <div class="flex items-center gap-1 text-xs" style="color: #c9a84c;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
+                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0
+                               012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18
+                               0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0
+                               0021 18.75m-18 0v-7.5A2.25 2.25 0
+                               015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+                    </svg>
+                    <span>{{ formatFecha(e.fechaEvento) }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
